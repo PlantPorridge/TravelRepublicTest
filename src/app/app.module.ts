@@ -4,15 +4,19 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
+import { EstablishmentCardComponent } from 'app/components/establishment-card/establishment-card.component';
+import { NouisliderModule } from 'ng2-nouislider';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    EstablishmentCardComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    NouisliderModule
   ],
   providers: [],
   bootstrap: [AppComponent]

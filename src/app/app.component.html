@@ -1,3 +1,30 @@
-<h1>
-  {{title}}
-</h1>
+<div class="order-and-filters">
+
+  <span>Order By:</span>
+  <select [ngModel]="selectedOrder" (ngModelChange)="selectedOrderChange($event)">
+        <option *ngFor="let option of orderOptions" [ngValue]="option">{{option.name}}</option>
+      </select>
+
+  <span>Name:</span>
+  <input type="text" [ngModel]='filterText' (ngModelChange)="filterTextChange($event)" />
+
+  <span>Stars:</span>
+  <select [ngModel]="selectedStarFilter" (ngModelChange)="selectedStarFilterChange($event)">
+    <option *ngFor="let option of starOptions" [ngValue]="option">{{option.name}}</option>
+  </select>
+
+
+  <span>User Rating: ({{userRatingRange[0]}}-{{userRatingRange[1]}})</span>
+  <div>
+    <nouislider [connect]="true" [min]="minUserRating" [max]="maxUserRating" [ngModel]="userRatingRange" (ngModelChange)="userRatingRangeChange($event)"
+      [step]="0.1"></nouislider>
+  </div>
+
+  <span>Cost: ({{costRange[0] | currency:"GBP":"true"}}-{{costRange[1] | currency:"GBP":"true"}})</span>
+  <div>
+    <nouislider [connect]="true" [min]="minCost" [max]="maxCost" [ngModel]="costRange" (ngModelChange)="costRangeChange($event)" [step]="0.01"></nouislider>
+  </div>
+
+</div>
+
+<app-establishment-card *ngFor='let e of filteredAndOrderedEstablishments' [establishment]='e'></app-establishment-card>

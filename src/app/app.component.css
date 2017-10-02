@@ -1,0 +1,15 @@
+app-establishment-card {
+    margin: 5px auto;
+    max-width: 650px;
+}
+
+.order-and-filters {
+    justify-content: center;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 200px 200px;
+}
+
+.order-and-filters > span {
+    align-self: center;
+}

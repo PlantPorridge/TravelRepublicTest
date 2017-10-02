@@ -1,0 +1,10 @@
+<img class="establishment__thumbnail" src="{{establishment.ThumbnailUrl}}">
+<div class="establishment__details">
+    <span>{{establishment.Name}}</span><br/>
+    <span>{{establishment.Location}}</span><span> ({{establishment.Distance | number:'1.0-2'}}km)</span><br/>
+    <span>{{establishment.Stars}} Stars</span><br/>
+    <span *ngIf="establishment.UserRatingCount">User Rating: {{establishment.UserRating}}</span><span> {{establishment.UserRatingTitle}}</span><span *ngIf="establishment.UserRatingCount"> ({{establishment.UserRatingCount}} Ratings)</span>
+</div>
+<div class="establishment__price">
+    <span>{{establishment.MinCost | currency:'GBP':'true'}}</span>
+</div>
