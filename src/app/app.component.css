@@ -13,3 +13,9 @@ app-establishment-card {
 .order-and-filters > span {
     align-self: center;
 }
+
+@media(max-width:500px){
+    .order-and-filters {
+        grid-template-columns: 200px;
+    }
+}

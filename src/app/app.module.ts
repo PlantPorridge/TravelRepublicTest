@@ -5,7 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { EstablishmentCardComponent } from 'app/components/establishment-card/establishment-card.component';
-import { NouisliderModule } from 'ng2-nouislider';
+import { NouisliderModule } from 'ng2-nouislider/src/nouislider';
 
 @NgModule({
   declarations: [

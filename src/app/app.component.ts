@@ -12,8 +12,15 @@ export class AppComponent implements OnInit {
   filteredAndOrderedEstablishments: IEstablishment[];
   establishments: IEstablishment[];
 
+  ngOnInit(): void {
+    this.filteredAndOrderedEstablishments = this.establishments = <IEstablishment[]>(<any>establishmentsData).Establishments;
+    this.computeUserRatingRange(this.establishments);
+    this.computePriceRange(this.establishments);
+  }
+
   selectedOrder: OrderOption;
   orderOptions: OrderOption[] = [
+    { name: "", ascending: true, property: null },    
     { name: "Distance (nearest)", ascending: true, property: 'Distance' },
     { name: "Distance (furthest)", ascending: false, property: 'Distance' },
     { name: "Stars (lowest first)", ascending: true, property: 'Stars' },
@@ -29,24 +36,6 @@ export class AppComponent implements OnInit {
     this.filterAndOrderEstablishments();
   }
 
-  order(array: IEstablishment[]): IEstablishment[] {
-    if (!this.selectedOrder) return array;
-
-    array.sort((a, b) => {
-      let aValue = (<any>a)[this.selectedOrder.property];
-      let bValue = (<any>b)[this.selectedOrder.property];
-
-      if (aValue == bValue) return 0;
-
-      let n = aValue < bValue ? -1 : 1;
-
-      return n * (this.selectedOrder.ascending ? 1 : -1);
-    });
-
-    return array;
-  }
-
-  //Filters
   filterText: string = '';
   filterTextChange($event: any) {
     this.filterText = $event;
@@ -95,9 +84,6 @@ export class AppComponent implements OnInit {
     if (!this.userRatingRange) {
       this.userRatingRange = [this.minUserRating, this.maxUserRating];
     }
-
-    if (this.userRatingRange[0] < this.minUserRating) this.userRatingRange[0] = this.minUserRating;
-    if (this.userRatingRange[1] > this.maxUserRating) this.userRatingRange[1] = this.maxUserRating;
   }
 
   computePriceRange(array: IEstablishment[]) {
@@ -111,9 +97,6 @@ export class AppComponent implements OnInit {
     if (!this.costRange) {
       this.costRange = [this.minCost, this.maxCost];
     }
-
-    if (this.costRange[0] < this.minCost) this.costRange[0] = this.minCost;
-    if (this.costRange[1] > this.maxCost) this.costRange[1] = this.maxCost;
   }
 
   computeRange(array: IEstablishment[], property: string): number[] {
@@ -134,7 +117,6 @@ export class AppComponent implements OnInit {
   }
 
 
-
   filterAndOrderEstablishments() {
     let filtered = this.filterOnText(this.establishments);
     filtered = this.filterOnStars(filtered);
@@ -144,7 +126,9 @@ export class AppComponent implements OnInit {
     this.filteredAndOrderedEstablishments = this.order(filtered);
   }
 
-  //Debounce for 400 to allow users to settle on a value when using inputs that may change value quickly.
+  //Debounce for 400ms to allow users to settle on a value when using inputs that may change value quickly.
+  //E.g. allows multiple characters to be typed before initiating a filter and order.
+  timeout: any;  
   debounceFilterAndOrderEstablishments: () => void = () => {
     var later = () => {
       this.timeout = null;
@@ -182,15 +166,25 @@ export class AppComponent implements OnInit {
     })
   }
 
+  order(array: IEstablishment[]): IEstablishment[] {
+    if (!this.selectedOrder || this.selectedOrder.property == null) return array;
 
+    array.sort((a, b) => {
+      let aValue = (<any>a)[this.selectedOrder.property];
+      let bValue = (<any>b)[this.selectedOrder.property];
 
-  ngOnInit(): void {
-    this.filteredAndOrderedEstablishments = this.establishments = <IEstablishment[]>(<any>establishmentsData).Establishments;
-    this.computeUserRatingRange(this.establishments);
-    this.computePriceRange(this.establishments);
+      if (aValue == bValue) return 0;
+
+      let n = aValue < bValue ? -1 : 1;
+
+      return n * (this.selectedOrder.ascending ? 1 : -1);
+    });
+
+    return array;
   }
 
-  timeout: any;
+
+
 
 
 }
